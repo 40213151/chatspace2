@@ -5,7 +5,7 @@ $(function(){
       MessageImage = `<img src="${message.image}" class="lower-message__image" >`
     }
     var html = `
-        <div class="message">
+        <div class="message" data-message-id="${ message.id }">
           <div class="upper-message">
             <div class="upper-message__user-name">
               ${ message.user_name }
@@ -23,6 +23,11 @@ $(function(){
         </div>`;
     return html;
 }
+
+  function Scroll(){
+    $('.messages').animate({scrollTop: $('.messages')[0].scrollHeight}, 'fast');
+  }
+
   $('#new_message').on('submit', function(e){
     e.preventDefault();
     var formData = new FormData(this);
@@ -40,10 +45,37 @@ $(function(){
       $('.messages').append(html);
       $('.form__message').val('');
       $(".form__submit").attr('disabled', false);
-      $('.messages').animate({scrollTop: $('.messages')[0].scrollHeight}, 'fast')
+      Scroll();
     })
     .fail(function(){
       alert('メッセージの送信に失敗しました');
     })
   })
-})
+
+  var interval = setInterval(function(){
+    if (window.location.href.match(/\/groups\/\d+\/messages/)){
+      $.ajax({
+        url: location.href.json,
+        type: 'GET',
+        dataType: 'json'
+      })
+
+      .done(function(json){
+        var last_message_id = $('.message:last').data('message-id');
+        var insertHTML = '';
+        json.messages.forEach(function(message){
+          if (message.id > last_message_id){
+            insertHTML += buildHTML(message);
+          }
+        });
+        $('.messages').append(insertHTML);
+        scroll()
+      })
+
+      .fail(function(json){
+        alert('自動更新失敗ンゴ')
+      });
+    } else{
+      crearInterval(interval);
+    }} , 5 * 1000);
+});
