@@ -12,6 +12,7 @@ $(function(){
             </div>
             <div class="upper-message__date">
               ${ message.created_at }
+
             </div>
           </div>
           <div class="lower-meesage">
@@ -43,7 +44,7 @@ $(function(){
     .done(function(data){
       var html = buildHTML(data);
       $('.messages').append(html);
-      $('.form__message').val('');
+      $('#new_message')[0].reset;
       $(".form__submit").attr('disabled', false);
       Scroll();
     })

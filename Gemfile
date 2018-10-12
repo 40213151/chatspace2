@@ -24,6 +24,7 @@ gem 'devise'
 gem 'haml-rails'
 gem 'erb2haml'
 gem 'carrierwave'
+gem 'fog-aws'
 gem 'mini_magick'
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
