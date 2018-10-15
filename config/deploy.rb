@@ -1,5 +1,5 @@
 # config valid only for current version of Capistrano
-lock '~> 3.11.0'
+lock '3.11.0'
 
 set :application, 'chatspace2'
 set :repo_url,  'git@github.com:40213151/chatspace2.git'
@@ -42,4 +42,3 @@ namespace :deploy do
   end
   before :starting, 'deploy:upload'
   after :finishing, 'deploy:cleanup'
-end
