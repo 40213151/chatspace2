@@ -68,6 +68,7 @@ $(function(){
           if (message.id > last_message_id){
             insertHTML += buildHTML(message);
           }
+          console.log(message)
         });
         $('.messages').append(insertHTML);
         scroll()
