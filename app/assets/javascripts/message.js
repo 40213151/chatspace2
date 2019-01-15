@@ -1,4 +1,4 @@
-$(function(){
+$(document).on('turbolinks:load', function() {
   function buildHTML(message){
     var MessageImage = ''
     if (message.image){
@@ -12,7 +12,6 @@ $(function(){
             </div>
             <div class="upper-message__date">
               ${ message.created_at }
-
             </div>
           </div>
           <div class="lower-meesage">
@@ -44,7 +43,7 @@ $(function(){
     .done(function(data){
       var html = buildHTML(data);
       $('.messages').append(html);
-      $('#new_message')[0].reset;
+      $('#new_message')[0].reset();
       $(".form__submit").attr('disabled', false);
       Scroll();
     })
@@ -55,27 +54,26 @@ $(function(){
 
   var interval = setInterval(function(){
     if (window.location.href.match(/\/groups\/\d+\/messages/)){
+      var last_message_id = $('.message:last').data('message-id');
+      console.log(last_message_id)
       $.ajax({
-        url: location.href.json,
+        url: location.href,
         type: 'GET',
+        data: {id: last_message_id},
         dataType: 'json'
       })
 
-      .done(function(json){
-        var last_message_id = $('.message:last').data('message-id');
+      .done(function(data){
         var insertHTML = '';
-        json.messages.forEach(function(message){
-          if (message.id > last_message_id){
-            insertHTML += buildHTML(message);
-          }
-          console.log(message)
+        data.forEach(function(message){
+          insertHTML += buildHTML(message);
+          $('.messages').append(insertHTML);
+          Scroll();
         });
-        $('.messages').append(insertHTML);
-        scroll()
       })
 
       .fail(function(json){
-        alert('自動更新失敗ンゴ')
+        console.log('自動更新失敗ンゴ');
       });
     } else{
       crearInterval(interval);
