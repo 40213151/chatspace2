@@ -9,9 +9,16 @@ $(document).on('turbolinks:load', function() {
     search_list.append(html);
    }
 
+  function appendNoUser(message){
+    var html = `<div class="chat-group-user clearfix">
+                  <p class="chat-group-user__name">${ message }</p>
+                </div>`
+    search_list.append(html);
+  }
+
   function addUser(name, id){
     var html = `<div class='chat-group-user clearfix js-chat-member' id='chat-group-user-8'>
-                  <input name='group[user_ids][]' type='hidden' value='${id}'>
+                  <input name='group[user_ids][]' type='hidden' value='${id}' class="chat-group-user__selected_user_id">
                   <p class='chat-group-user__name'>${name}</p>
                   <a class='user-search-remove chat-group-user__btn chat-group-user__btn--remove js-remove-btn'>削除</a>
                 </div>`
@@ -19,20 +26,35 @@ $(document).on('turbolinks:load', function() {
   }
 
   $("#user-search-field").on("keyup", function(){
-    $("#user-search-result").empty();
     var input = $(this).val();
+    var selected_users = [];
+    selected_users.length = 0;
+
+    $(".chat-group-user__selected_user_id").each(function(){
+      selected_users.push($(this).attr("value"));
+    });
+
     if(input.length == 0){
+      $("#user-search-result").empty();
     } else{
       $.ajax({
         type: 'GET',
         url: '/users',
-        data: { keyword: input },
+        data: { keyword: input,
+                selected_users: selected_users
+              },
         dataType: 'json'
       })
      .done(function(users){
-        users.forEach(function(user){
-          appendUser(user);
-        });
+        $("#user-search-result").empty();
+        if (users.length != 0){
+          users.forEach(function(user){
+            appendUser(user);
+          });
+        }else{
+          $("#user-search-result").empty();
+          appendNoUser("一致するユーザーはいません")
+        }
       })
      .fail(function(){
       alert('そんな人知りません')

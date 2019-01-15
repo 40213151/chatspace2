@@ -29,9 +29,11 @@ $(document).on('turbolinks:load', function() {
   }
 
   $('#new_message').on('submit', function(e){
+    // formが発火された時に実行
     e.preventDefault();
     var formData = new FormData(this);
     var url = $(this).attr('action')
+    // ajax通信を行う js => controller
     $.ajax({
       url: url,
       type: "POST",
@@ -40,6 +42,7 @@ $(document).on('turbolinks:load', function() {
       processData: false,
       contentType: false
     })
+    // ajax通信が成功した時 controller => jbuilder => js
     .done(function(data){
       var html = buildHTML(data);
       $('.messages').append(html);
@@ -76,6 +79,6 @@ $(document).on('turbolinks:load', function() {
         console.log('自動更新失敗ンゴ');
       });
     } else{
-      crearInterval(interval);
+      clearInterval();
     }} , 5 * 1000);
 });

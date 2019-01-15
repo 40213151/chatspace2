@@ -1,3 +1,6 @@
 .wrapper{
   @include flexbox;
 }
+a{
+  text-decoration: none;
+}
