@@ -1,11 +1,8 @@
 $(document).on('turbolinks:load', function() {
   function buildHTML(message){
-    var MessageImage = ''
-    if (message.image){
-      MessageImage = `<img src="${message.image}" class="lower-message__image" >`
-    }
+    var MessageImage = (message.image) ? `<img src="${message.image}" class="lower-message__image">` : ``
     var html = `
-        <div class="message" data-message-id="${ message.id }">
+        <div class="message" data-message_id="${message.id}">
           <div class="upper-message">
             <div class="upper-message__user-name">
               ${ message.user_name }
@@ -32,8 +29,8 @@ $(document).on('turbolinks:load', function() {
     // formが発火された時に実行
     e.preventDefault();
     var formData = new FormData(this);
+    // console.log(formData);
     var url = $(this).attr('action')
-    // ajax通信を行う js => controller
     $.ajax({
       url: url,
       type: "POST",
@@ -44,8 +41,9 @@ $(document).on('turbolinks:load', function() {
     })
     // ajax通信が成功した時 controller => jbuilder => js
     .done(function(data){
+      console.log(data);
       var html = buildHTML(data);
-      $('.messages').append(html);
+      $('.messag').append(html);
       $('#new_message')[0].reset();
       $(".form__submit").attr('disabled', false);
       Scroll();
@@ -57,26 +55,30 @@ $(document).on('turbolinks:load', function() {
 
   var interval = setInterval(function(){
     if (window.location.href.match(/\/groups\/\d+\/messages/)){
-      var last_message_id = $('.message:last').data('message-id');
-      console.log(last_message_id)
+      var last_message_id = $('.message:last').data('id');
+      // console.log(last_message_id);
       $.ajax({
         url: location.href,
         type: 'GET',
         data: {id: last_message_id},
         dataType: 'json'
+        // processData: false,
+        // contentType: false
       })
 
       .done(function(data){
         var insertHTML = '';
-        data.forEach(function(message){
-          insertHTML += buildHTML(message);
-          $('.messages').append(insertHTML);
+        if(data.length != 0){
+          data.forEach(function(message){
+            insertHTML += buildHTML(message);
+          });
+          $('.message').append(insertHTML);
           Scroll();
-        });
+        }
       })
 
       .fail(function(json){
-        console.log('自動更新失敗ンゴ');
+        // console.log('自動更新失敗ンゴ');
       });
     } else{
       clearInterval();

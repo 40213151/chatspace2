@@ -15,7 +15,6 @@ $(document).on('turbolinks:load', function() {
                 </div>`
     search_list.append(html);
   }
-
   function addUser(name, id){
     var html = `<div class='chat-group-user clearfix js-chat-member' id='chat-group-user-8'>
                   <input name='group[user_ids][]' type='hidden' value='${id}' class="chat-group-user__selected_user_id">
@@ -26,6 +25,7 @@ $(document).on('turbolinks:load', function() {
   }
 
   $("#user-search-field").on("keyup", function(){
+    console.log('')
     var input = $(this).val();
     var selected_users = [];
     selected_users.length = 0;

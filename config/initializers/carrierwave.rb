@@ -1,4 +1,4 @@
-require 'carrierwave/storage/abstract'
+ require 'carrierwave/storage/abstract'
 require 'carrierwave/storage/file'
 require 'carrierwave/storage/fog'
 
@@ -13,5 +13,5 @@ CarrierWave.configure do |config|
   }
 
   config.fog_directory  = 'upload-test01'
-  config.asset_host = 'https://s3-ap-northeast-1.amazonaws.com/upload-test01'
+  config.asset_host = 'https://s3-ap-northeast-1.amazonaws.com/s3mercari'
 end
