@@ -43,7 +43,7 @@ $(document).on('turbolinks:load', function() {
     .done(function(data){
       console.log(data);
       var html = buildHTML(data);
-      $('.messag').append(html);
+      $('.messages').append(html);
       $('#new_message')[0].reset();
       $(".form__submit").attr('disabled', false);
       Scroll();
