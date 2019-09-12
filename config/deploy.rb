@@ -6,7 +6,7 @@ lock '3.11.1'
 set :application, 'chatspace2'
 
 # どのリポジトリからアプリをpullするかを指定する
-set :repo_url,  'git@github.com:40213151/chatspace2.git'
+set :repo_url,  'git@github.com:<Githubのユーザー名>/<レポジトリ名>.git'
 
 # バージョンが変わっても共通で参照するディレクトリを指定
 set :linked_dirs, fetch(:linked_dirs, []).push('log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'vendor/bundle', 'public/system', 'public/uploads')
@@ -16,7 +16,7 @@ set :rbenv_ruby, '<このアプリで使用しているrubyのバージョン>' 
 
 # どの公開鍵を利用してデプロイするか
 set :ssh_options, auth_methods: ['publickey'],
-                  keys: ['<ローカルPCのEC2インスタンスのSSH鍵(pem)へのパス>']
+                  keys: ['~/.ssh/aws_key.pem']
 
 # プロセス番号を記載したファイルの場所
 set :unicorn_pid, -> { "#{shared_path}/tmp/pids/unicorn.pid" }
