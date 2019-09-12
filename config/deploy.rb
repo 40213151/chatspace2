@@ -16,7 +16,7 @@ set :rbenv_ruby, '<このアプリで使用しているrubyのバージョン>' 
 
 # どの公開鍵を利用してデプロイするか
 set :ssh_options, auth_methods: ['publickey'],
-                  keys: ['aws_key.pem']
+                  keys: ['~/.ssh/aws_key.pem']
 
 # プロセス番号を記載したファイルの場所
 set :unicorn_pid, -> { "#{shared_path}/tmp/pids/unicorn.pid" }
